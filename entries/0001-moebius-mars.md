@@ -1,7 +1,7 @@
 # 0001: A robot on Mars, in a Moebius style
 
-Date: 2026-11-11 to 2026-11-12
-Session length: about 6 h, overnight
+Date: 2026-11-12, 12:06 AM to about 1:35 AM ET
+Session length: about 1.5 h
 
 ## Goal
 

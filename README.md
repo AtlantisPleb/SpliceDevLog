@@ -2,6 +2,8 @@
 
 Goal: win **Glass Box**, "Best dev log showing how you built your game
 (Unreal Engine or UEFN)". The jam build window is 2026-11-12 to 2026-11-15.
+All dates and times in this log are US Eastern (ET). Our first session started
+at 12:06 AM ET on Nov 12.
 
 A judge should be able to read the log and see, step by step, how the game was
 built: what we tried, what broke, why it broke, how we fixed it, and what it

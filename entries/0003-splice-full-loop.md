@@ -1,6 +1,6 @@
 # 0003: Splice gray box, steps 2–7: the full loop
 
-Date: 2026-11-12, overnight
+Date: 2026-11-12, from about 1:35 AM ET
 Session length: about 1.5 h, run by the agent while the team slept
 
 ## Goal

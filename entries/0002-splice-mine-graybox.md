@@ -1,6 +1,6 @@
 # 0002: Splice gray box, step 1: the mine
 
-Date: 2026-11-12
+Date: 2026-11-12, from about 1:35 AM ET
 Session length: about 20 min
 
 ## Goal

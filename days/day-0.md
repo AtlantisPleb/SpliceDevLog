@@ -1,6 +1,8 @@
 [Home](../index.md) · [Devlog](../devlog.md) · [How We Used AI](../how-we-used-ai.md) · [Play](../play.md)
 
-# Day 0: Concept (Nov 11)
+# Day 0: Concept (Nov 12, from 12:06 AM ET)
+
+*All times are US Eastern (ET). Our first session started at 12:06 AM ET on Nov 12, inside the jam window.*
 
 ## What we built today
 
@@ -13,7 +15,7 @@
   rendering by sampling it frame by frame. From that we wrote our own plan for
   the effect: ink outlines, flat colour, hatching in shadow, and paper grain.
 - **The look, tested.** We tested it on a throwaway robot-on-Mars scene. The
-  test ran from the evening into just after midnight. See
+  test ran from 12:06 AM to about 1:35 AM ET on Nov 12. See
   [build note 0001](../entries/0001-moebius-mars.md).
 
 ## Concept sketches

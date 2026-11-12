@@ -1,7 +1,7 @@
 # Moebius-style rendering for Rovers: analysis and plan
 
 Status: plan only. Nothing here is implemented.
-Written 2026-11-11.
+Written 2026-11-12, 12:13 AM ET.
 
 ## 1. Source and method
 
@@ -137,4 +137,4 @@ and, where possible, a headless capture (see the `run` skill).
   sampled every 5 s, plus captions; no frames are reproduced here).
 - `docs/unreal/web-games-in-the-verse.md` (renderer limits and performance
   bars).
-- `Rovers/` (Third Person C++ project, created 2026-11-11).
+- `Rovers/` (Third Person C++ project, created 2026-11-12, 12:10 AM ET).

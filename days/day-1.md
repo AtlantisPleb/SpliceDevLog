@@ -1,6 +1,8 @@
 [Home](../index.md) · [Devlog](../devlog.md) · [How We Used AI](../how-we-used-ai.md) · [Play](../play.md)
 
-# Day 1 (Nov 12)
+# Day 1 (Nov 12, from 1:35 AM ET)
+
+*All times are US Eastern (ET).*
 
 ## What we built today
 

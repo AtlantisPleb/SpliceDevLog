@@ -1,6 +1,6 @@
 [Prompt log](README.md)
 
-# Day 0 prompts (Nov 11)
+# Day 0 prompts (Nov 12, from 12:06 AM ET)
 
 To Claude Code, in the Unreal project:
 

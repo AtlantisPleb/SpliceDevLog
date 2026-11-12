@@ -2,7 +2,7 @@
 
 # Devlog
 
-One page per day. Each one covers:
+One page per day. All dates and times are US Eastern (ET). Each one covers:
 - what we built
 - a clip
 - the real prompts we used
@@ -12,8 +12,8 @@ One page per day. Each one covers:
 
 | Day | Date | Summary |
 |---|---|---|
-| [Day 0: Concept](days/day-0.md) | Nov 11 | Pitch and sketches, plus a Moebius shader test on a robot-on-Mars scene |
-| [Day 1](days/day-1.md) | Nov 12 | Gray box: mine level, pickups, edit bay, Digger bot, end screen. The full loop works. |
+| [Day 0: Concept](days/day-0.md) | Nov 12 (from 12:06 AM ET) | Pitch and sketches, plus a Moebius shader test on a robot-on-Mars scene |
+| [Day 1](days/day-1.md) | Nov 12 (from 1:35 AM ET) | Gray box: mine level, pickups, edit bay, Digger bot, end screen. The full loop works. |
 | [Day 2](days/day-2.md) | Nov 13 | *coming* |
 | [Day 3](days/day-3.md) | Nov 14 | *coming* |
 | [Day 4](days/day-4.md) | Nov 15 | *coming* |
