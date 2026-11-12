@@ -27,4 +27,4 @@
 ---
 
 Built by Kiki and Chris in Unreal Engine 5.9 for the Epic AI MegaJam (Nov 12–15, 2026).
-[How we keep this log](README.md)
+[How we keep this log](https://github.com/AtlantisPleb/SpliceDevLog/blob/main/README.md)
