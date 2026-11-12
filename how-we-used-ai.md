@@ -29,7 +29,8 @@
 | All level and prop shapes (mine, rover, parts, bot, rubble) | Unreal Engine basic shapes (cube, sphere, cylinder, cone), shipped with the engine |
 | Player character | Unreal Engine Third Person template mannequin (Epic Games, engine content) |
 | Materials (flat colours) | Made in script by us and the agent; no textures |
-| Moebius look | Our own post-process shader, written from [our spec](https://github.com/AtlantisPleb/SpliceDevLog/blob/main/code/docs/art/moebius-style-spec.md). No frames or art from the reference video are used. |
+| Comic look | Our own unlit materials and ink-line post-process shader, written from [our spec](https://github.com/AtlantisPleb/SpliceDevLog/blob/main/code/docs/art/moebius-style-spec.md). No frames or art from the reference video are used. |
+| UI fonts | Michroma and IBM Plex Mono, SIL Open Font License, from [Google Fonts](https://fonts.google.com/) |
 | Concept sketches | Handmade by the team (Day 0) |
 | AI-generated images | None so far |
 

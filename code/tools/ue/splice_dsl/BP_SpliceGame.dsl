@@ -14,6 +14,13 @@
   (:`Pressed` (`self.ToggleEditBay`))
   (:`Released`))
 
+; TAB does the same (the key on Kiki's UI board). E stays as a second key in case a
+; browser takes TAB for itself.
+(event `Key|Tab`
+  (params (Key))
+  (:`Pressed` (`self.ToggleEditBay`))
+  (:`Released`))
+
 (event `ToggleEditBay`
   (if (`self.BayOpen`)
     (`self.CloseEditBay`)
@@ -141,7 +148,7 @@
   (`TextBlock.SetText` (`/Game/Splice/UI/WBP_HUD.PromptText` hud)
     (`KismetTextLibrary.Conv_StringToText`
       (select `bool` (and (`self.NearRover`) (not (`self.BayOpen`)) (not (`self.BotRunning`)))
-        :`true` "Press E to open Edit Bay"
+        :`true` "[TAB] or [E]  ·  Open the edit bay"
         :`false` ""))))
 
 (event `RefreshEditBay`

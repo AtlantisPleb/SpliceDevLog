@@ -25,3 +25,4 @@ These are longer technical write-ups, linked from the day pages.
 - [0001: A robot on Mars, in a Moebius style](entries/0001-moebius-mars.md)
 - [0002: Splice gray box, step 1: the mine](entries/0002-splice-mine-graybox.md)
 - [0003: Splice gray box, steps 2–7: the full loop](entries/0003-splice-full-loop.md)
+- [0004: First web build, and a look that survives it](entries/0004-web-build-and-look.md)

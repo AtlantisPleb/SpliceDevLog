@@ -17,7 +17,7 @@
 
 ## Where we are
 
-![The gray box loop working: SCENE RESTORED](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0003/play_10_scene_restored.png)
+![Splice running in the browser](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0004/web_forward_a_start.png)
 
 - **Day 0 (Nov 12, from 12:06 AM ET):** concept, plus a Moebius-style comic shader test. [Read](days/day-0.md)
 - **Day 1 (Nov 12, from 1:35 AM ET):** the whole gray box loop (scavenge, splice, deploy, end screen) playable start to end. [Read](days/day-1.md)

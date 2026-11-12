@@ -18,7 +18,9 @@ to end. Everything is Blueprints, with no C++.
 | 5 | `BP_Bot`, the Digger, which runs its cards in order: MOVE drives up to the rubble, DRILL cuts through it | Done |
 | 6 | `BP_Rubble`. A wrong cut shows "Bad cut. Re-edit at the rover." and lets you re-cut | Done |
 | 7 | `BP_EndTrigger` and the "SCENE RESTORED" screen, with a Restart button | Done |
-| Look | The Moebius post-process, turned on in the mine | On; still needs tuning |
+| Look | Flat comic materials and ink lines, the same on both web tiers | Done; art still to come |
+| Web | First web build, tested in Chrome on both renderer tiers | Done |
+| UI | Restyled to Kiki's Game UI board: paper, ink, Michroma, IBM Plex Mono | Style done; layout still gray-box |
 
 **Tested by script in play mode:**
 - picked up all 5 items;
@@ -35,7 +37,13 @@ to end. Everything is Blueprints, with no C++.
 | ![Edit bay, wrong order](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0003/play_04_bay_wrong_order.png) | ![Bad cut](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0003/play_06_bad_cut.png) |
 | ![Edit bay, right order](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0003/play_07_bay_right_order.png) | ![Scene restored](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0003/play_10_scene_restored.png) |
 
-The mine with the Moebius shader on:
+In the browser, on the web build's forward tier, with the new look and UI:
+
+| | |
+|---|---|
+| ![Web build start](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0004/web_forward_a_start.png) | ![Edit bay in the web build](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0004/web_forward_b_bay_open.png) |
+
+The mine with the first Moebius shader, before the look was rebuilt:
 
 ![Moebius in the scrap room](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0003/moebius_scrap.png)
 
@@ -67,7 +75,8 @@ post-process shader on, too.
 | `AddToViewport hud` wouldn't connect | In the graph format, a single unnamed argument fills the first data pin (ZOrder), not the target | Name the target pin: write `:self hud` instead of a bare `hud` |
 | Setting `bShowMouseCursor` and the bot's `Cards` failed | Same cause: positional values went into the wrong pins | Name every pin on setters |
 | No way to break a trace's hit result in the graph format | `HitResult` has a native break function the format can't express | The mine runs straight along +X, so the bot measures its distance to the rubble on the X axis instead of tracing |
-| Couldn't test the E key by script | macOS blocks scripted keystrokes | Tested the same event directly. **A real E press still needs one human test.** |
+| The Moebius shader wiped out the 3D view on the web's forward tier | It read buffers that tier doesn't have | Rebuilt the look as unlit comic materials plus a depth-only ink pass ([build note 0004](../entries/0004-web-build-and-look.md)) |
+| Couldn't test the E key by script | macOS blocks scripted keystrokes | Tested the same event directly, then pressed real E and TAB keys in the web build through a browser test |
 
 Details: [build note 0002](../entries/0002-splice-mine-graybox.md) · [build note 0003](../entries/0003-splice-full-loop.md)
 
