@@ -1,0 +1,8 @@
+title: Splice devlog
+description: How we built Splice for the Epic AI MegaJam, day by day.
+theme: jekyll-theme-primer
+plugins:
+  - jekyll-relative-links
+relative_links:
+  enabled: true
+  collections: false

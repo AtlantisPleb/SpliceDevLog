@@ -113,3 +113,4 @@ On the last day:
 |---|---|---|
 | [0001](https://github.com/AtlantisPleb/SpliceDevLog/blob/main/entries/0001-moebius-mars.md) | 2026-11-12 | A robot on Mars, in a Moebius style |
 | [0002](https://github.com/AtlantisPleb/SpliceDevLog/blob/main/entries/0002-splice-mine-graybox.md) | 2026-11-12 | Splice gray box, step 1: the mine |
+| [0003](https://github.com/AtlantisPleb/SpliceDevLog/blob/main/entries/0003-splice-full-loop.md) | 2026-11-12 | Splice gray box, steps 2–7: the full loop |
