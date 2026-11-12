@@ -82,10 +82,8 @@ for label, item, m, loc, sc in FRAGS:
     f.set_editor_property("ItemName", item)
     f.get_component_by_class(unreal.StaticMeshComponent).set_material(0, mat(m))
 
-pad = eas.spawn_actor_from_class(bpc("BP_EndTrigger"), unreal.Vector(3600, 0, 0))
-pad.set_actor_label("ExitPad")
-pad.set_folder_path("Gameplay")
+# The old end pad is gone: the run now ends with the memory scene (splice_slice_level.py).
 
 unreal.EditorLoadingAndSavingUtils.save_dirty_packages(True, True)
-f"placed: rubble={n}, game, rover, {len(FRAGS)} fragments, bot spawn, exit pad"
+f"placed: rubble={n}, game, rover, {len(FRAGS)} fragments, bot spawn"
 '''))

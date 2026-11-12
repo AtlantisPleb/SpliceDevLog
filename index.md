@@ -17,10 +17,10 @@
 
 ## Where we are
 
-![Splice running in the browser](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0005/web_c_party_room.png)
+![Splice running in the browser](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0006/web_b_hall.png)
 
 - **Day 0 (Nov 12, from 12:06 AM ET):** concept, plus a Moebius-style comic shader test. [Read](days/day-0.md)
-- **Day 1 (Nov 12, from 1:35 AM ET):** the gray box loop, the first web build, and the night zone with Heat, raiders and hearts. [Read](days/day-1.md)
+- **Day 1 (Nov 12, from 1:35 AM ET):** the whole Tier 1 run: the day mine, the night party, the boss and the memory ending, playing in the browser. [Read](days/day-1.md)
 
 [All days →](devlog.md)
 

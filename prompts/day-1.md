@@ -43,3 +43,12 @@ Result:
 - the Moebius look turned on in the mine.
 
 See [Day 1](../days/day-1.md).
+
+```text
+So I want you to keep going, do as much of the brief as you can, but also evolve the party scene to have a network of rooms you have to explore to find the one blue piece, not a bunch of them. If you fight and win any of the other characters, they drop robot pieces that go into your inventory.
+
+This is so that you can sell them later for battery juice when we include battery juice. But for now, make sure it feels like a party scene with the lighting, a cyberpunk party with a DJ and a main stage and different imperial robots patrolling, and raiders are relaxed and dancing in place. But make it so that there's several rooms to explore and reasons to explore them, like batteries to pick up. Have it so that your robot is following you around and it's always next to you.
+
+Before you prompt it to do something, you can see it moving from the main character to the activity it's set to do. And let's change the main character to a cylinder
+```
+Result: the night zone redesign and steps 11–12 ([build note 0006](../entries/0006-party-rooms-boss-ending.md)).

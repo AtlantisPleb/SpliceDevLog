@@ -21,6 +21,9 @@ to end. Everything is Blueprints, with no C++.
 | 8 | Day turns to night past the rubble; objective panel and phase label | Done |
 | 9 | Party Room, banned pieces, Heat meter, Imperial Sweep | Done |
 | 10 | Raiders, hearts, checkpoint | Done |
+| 11 | Stash crate, DRILL+, boss wall, boss with three weak points | Done |
+| 12 | Banned core, SPLICE CORE, the memory scene, SCENE RESTORED | Done |
+| Redesign | The night zone became a party across eight rooms, with one blue piece, passive raiders, patrolling Imperial robots, fights, battery cells, a Digger that follows you, and a cylinder player | Done |
 | Look | Flat comic materials and ink lines, the same on both web tiers | Done; art still to come |
 | Web | First web build, tested in Chrome on both renderer tiers | Done |
 | UI | Restyled to Kiki's Game UI board: paper, ink, Michroma, IBM Plex Mono | Style done; layout still gray-box |
@@ -40,7 +43,14 @@ to end. Everything is Blueprints, with no C++.
 | ![Edit bay, wrong order](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0003/play_04_bay_wrong_order.png) | ![Bad cut](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0003/play_06_bad_cut.png) |
 | ![Edit bay, right order](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0003/play_07_bay_right_order.png) | ![Scene restored](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0003/play_10_scene_restored.png) |
 
-The night zone, in the browser ([build note 0005](../entries/0005-night-heat-raiders.md)):
+The party and the ending, in the browser ([build note 0006](../entries/0006-party-rooms-boss-ending.md)):
+
+| | |
+|---|---|
+| ![The main hall](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0006/web_b_hall.png) | ![On the dance floor](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0006/web_d_dancefloor.png) |
+| ![The vault](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0006/web_f_vault.png) | ![The memory](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0006/web_h_memory2.png) |
+
+The first night zone, in the browser ([build note 0005](../entries/0005-night-heat-raiders.md)):
 
 | | |
 |---|---|
@@ -87,6 +97,8 @@ post-process shader on, too.
 | The Moebius shader wiped out the 3D view on the web's forward tier | It read buffers that tier doesn't have | Rebuilt the look as unlit comic materials plus a depth-only ink pass ([build note 0004](../entries/0004-web-build-and-look.md)) |
 | Three hearts gone in under three seconds | Each raider had its own hit cooldown, and several arrived together | The player holds the cooldown instead |
 | A lost banned piece was picked straight back up on respawn | Pieces reappeared before the player was moved | Move the player first |
+| F hit everyone in reach | A "return" inside a Blueprint loop only ends that pass | A flag set on the first hit |
+| The browser test's camera looked at the floor | The game page captures the mouse, so our real mouse turned the hidden test browser's camera | The test aims the camera itself before each shot |
 | Couldn't test the E key by script | macOS blocks scripted keystrokes | Tested the same event directly, then pressed real E and TAB keys in the web build through a browser test |
 
 Details: [build note 0002](../entries/0002-splice-mine-graybox.md) · [build note 0003](../entries/0003-splice-full-loop.md)

@@ -118,3 +118,4 @@ On the last day:
 | [0003](https://github.com/AtlantisPleb/SpliceDevLog/blob/main/entries/0003-splice-full-loop.md) | 2026-11-12 | Splice gray box, steps 2–7: the full loop |
 | [0004](https://github.com/AtlantisPleb/SpliceDevLog/blob/main/entries/0004-web-build-and-look.md) | 2026-11-12 | First web build, and a look that survives it |
 | [0005](https://github.com/AtlantisPleb/SpliceDevLog/blob/main/entries/0005-night-heat-raiders.md) | 2026-11-12 | Night, Heat, raiders and hearts (slice steps 8–10) |
+| [0006](https://github.com/AtlantisPleb/SpliceDevLog/blob/main/entries/0006-party-rooms-boss-ending.md) | 2026-11-12 | The party, the Digger at your side, the boss and the ending |

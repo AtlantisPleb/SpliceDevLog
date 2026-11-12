@@ -43,8 +43,18 @@ PALETTE = {
     "M_Pad": ("#4FB3D9", 1.8),          # glow
 }
 
+# Party neon: name -> (colour, pulse speed, pulse phase). No blue: blue means banned tech.
+NEON = {
+    "M_NeonPink": ("#FF2E9A", 5.0, 0.0),
+    "M_NeonLime": ("#B6FF3A", 5.0, 2.1),
+    "M_NeonAmber": ("#FFB020", 5.0, 4.2),
+    "M_NeonViolet": ("#A855F7", 2.0, 1.0),
+}
+
 SRC = r'''
 PALETTE = __PALETTE__
+NEON = __NEON__
+HOLO = __HOLO__
 MAT_DIR = "/Game/Splice/Materials"
 tools = unreal.AssetToolsHelpers.get_asset_tools()
 mel = unreal.MaterialEditingLibrary
@@ -113,6 +123,59 @@ def comic(name, rgb, glow):
 for name, (rgb, glow) in PALETTE.items():
     comic(name, rgb, glow)
 
+# ---- Party neon: an unlit colour that pulses. Each has its own speed and phase, so
+# neighbouring lights are out of step.
+NEON_CODE = """
+float pulse = 0.55 + 0.45 * sin(T * Speed + Phase);
+return Col * pulse;
+"""
+def neon(name, rgb, speed, phase):
+    m = get_or_create(name)
+    m.set_editor_property("shading_model", unreal.MaterialShadingModel.MSM_UNLIT)
+    col = mel.create_material_expression(m, unreal.MaterialExpressionConstant3Vector, -900, 0)
+    col.constant = unreal.LinearColor(rgb[0], rgb[1], rgb[2], 1.0)
+    t = mel.create_material_expression(m, unreal.MaterialExpressionTime, -900, 200)
+    sp = mel.create_material_expression(m, unreal.MaterialExpressionConstant, -900, 320)
+    sp.set_editor_property("r", speed)
+    ph = mel.create_material_expression(m, unreal.MaterialExpressionConstant, -900, 440)
+    ph.set_editor_property("r", phase)
+    c = custom(m, NEON_CODE, ["Col", "T", "Speed", "Phase"], unreal.CustomMaterialOutputType.CMOT_FLOAT3, -500, 200)
+    mel.connect_material_expressions(col, "", c, "Col")
+    mel.connect_material_expressions(t, "", c, "T")
+    mel.connect_material_expressions(sp, "", c, "Speed")
+    mel.connect_material_expressions(ph, "", c, "Phase")
+    mel.connect_material_property(c, "", unreal.MaterialProperty.MP_EMISSIVE_COLOR)
+    mel.recompile_material(m)
+    unreal.EditorAssetLibrary.save_asset(f"{MAT_DIR}/{name}")
+
+for name, (rgb, speed, phase) in NEON.items():
+    neon(name, rgb, speed, phase)
+
+# ---- M_Hologram: the memory scene. Glow blue with moving scanlines and a flicker.
+HOLO_CODE = """
+float3 L = normalize(float3(-0.45, -0.55, 0.70));
+float band = 0.72 + 0.28 * saturate(dot(normalize(N), L) * 0.5 + 0.5);
+float sc = max(VS.y / 720.0, 1.0);
+float2 p = UV * VS / sc;
+float scan = step(frac(p.y / 5.0 + T * 0.8), 0.55);
+float flicker = 0.88 + 0.12 * sin(T * 31.0);
+return Col * band * (0.45 + 0.55 * scan) * flicker;
+"""
+m = get_or_create("M_Hologram")
+m.set_editor_property("shading_model", unreal.MaterialShadingModel.MSM_UNLIT)
+col = mel.create_material_expression(m, unreal.MaterialExpressionConstant3Vector, -900, 0)
+col.constant = unreal.LinearColor(HOLO[0], HOLO[1], HOLO[2], 1.0)
+t = mel.create_material_expression(m, unreal.MaterialExpressionTime, -900, 200)
+n = mel.create_material_expression(m, unreal.MaterialExpressionVertexNormalWS, -900, 320)
+uv0 = mel.create_material_expression(m, unreal.MaterialExpressionScreenPosition, -900, 440)
+vs0 = mel.create_material_expression(m, unreal.MaterialExpressionViewSize, -900, 560)
+c = custom(m, HOLO_CODE, ["Col", "T", "N", "UV", "VS"], unreal.CustomMaterialOutputType.CMOT_FLOAT3, -500, 200)
+for src, pin in ((col, "Col"), (t, "T"), (n, "N"), (uv0, "UV"), (vs0, "VS")):
+    mel.connect_material_expressions(src, "", c, pin)
+mel.connect_material_property(c, "", unreal.MaterialProperty.MP_EMISSIVE_COLOR)
+mel.recompile_material(m)
+unreal.EditorAssetLibrary.save_asset(f"{MAT_DIR}/M_Hologram")
+
 # ---- M_Ink: depth-only contour lines + faint paper grain.
 INK = """
 float qC = 1.0 / max(DC, 1.0);
@@ -135,8 +198,11 @@ float3 ink = float3(0.118, 0.106, 0.094);
 // Time of day (MPC_Splice): depth fog first, then lines, then a tint over everything.
 float3 outc = lerp(Col, Fog.rgb, Fog.a * saturate(DC / 5000.0));
 outc = lerp(outc, ink, edge * 0.92);
-// Blue-dominant pixels (banned tech, the glow) keep their colour so they shine at night.
-float keep = saturate((outc.b - max(outc.r, outc.g) - 0.10) * 6.0);
+// Strongly saturated, bright pixels (banned-tech blue, neon, heat orange) keep their
+// colour, so they glow against the dark at night.
+float mx = max(outc.r, max(outc.g, outc.b));
+float mn = min(outc.r, min(outc.g, outc.b));
+float keep = smoothstep(0.62, 0.82, (mx - mn) / max(mx, 1e-3)) * step(0.45, mx);
 outc *= lerp(Tint.rgb, float3(1.0, 1.0, 1.0), keep);
 outc *= 0.97 + 0.03 * grain;
 return saturate(outc);
@@ -238,12 +304,14 @@ for label, pitch, yaw, lux in (("KeyLight", -50.0, 50.0, 3.2), ("FillLight", -20
     # Only one directional light can drive forward shading; make the key win outright.
     lc.set_editor_property("forward_shading_priority", 1 if label == "KeyLight" else 0)
 unreal.EditorLoadingAndSavingUtils.save_dirty_packages(True, True)
-f"look applied: {len(PALETTE)} comic materials, M_Ink, {lamps} old lights removed"
+f"look applied: {len(PALETTE)} comic materials, {len(NEON)} neon, M_Hologram, M_Ink, {lamps} old lights removed"
 '''
 
 if __name__ == "__main__":
     threshold = float(sys.argv[1]) if len(sys.argv) > 1 else 0.0025
     exposure = float(sys.argv[2]) if len(sys.argv) > 2 else 0.0
     pal = {k: (lin(v[0]), v[1]) for k, v in PALETTE.items()}
+    neon_lin = {k: (lin(v[0]), v[1], v[2]) for k, v in NEON.items()}
     print(py(SRC.replace("__PALETTE__", repr(pal)).replace("__THRESHOLD__", repr(threshold))
+             .replace("__NEON__", repr(neon_lin)).replace("__HOLO__", repr(lin("#4FB3D9")))
              .replace("__EXPOSURE__", repr(exposure))))

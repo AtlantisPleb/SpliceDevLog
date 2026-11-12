@@ -48,7 +48,8 @@ review, and every change shows up as a diff.
 4. [splice_build_logic.py](https://github.com/AtlantisPleb/SpliceDevLog/blob/main/code/tools/ue/splice_build_logic.py)
 5. [splice_place.py](https://github.com/AtlantisPleb/SpliceDevLog/blob/main/code/tools/ue/splice_place.py)
 
-**Playtest:** [splice_playtest.py](https://github.com/AtlantisPleb/SpliceDevLog/blob/main/code/tools/ue/splice_playtest.py)
+**Playtest:** the script used here was later replaced by a fuller one that plays the
+whole run: [splice_playtest_slice.py](https://github.com/AtlantisPleb/SpliceDevLog/blob/main/code/tools/ue/splice_playtest_slice.py)
 
 ## Playtest log
 

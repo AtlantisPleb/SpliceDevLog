@@ -154,6 +154,22 @@ text("WBP_HUD", "ObjectiveLabel", "OBJECTIVE", 12, INK, MONO_B, None, 150)
 text("WBP_HUD", "ObjectiveText", "", 14, INK, MICHROMA, None, 40).set_editor_property("auto_wrap_text", True)
 pad("WBP_HUD", "ObjectiveText", 0, 8, 0, 0)
 
+text("WBP_HUD", "HelpText", "[F]  Hit / stun", 14, PAPER, MONO_B, None, 40, INK)
+canvas("WBP_HUD", "HelpText", (0, 1, 0, 1), (28, -40), (0, 0), (0, 1), auto=True)
+
+# ---- The memory overlay: a click anywhere skips; the caption sits at the bottom.
+canvas("WBP_Memory", "BtnSkip", (0, 0, 1, 1), (0, 0), (0, 0), (0, 0))
+skip = W("WBP_Memory", "BtnSkip")
+sst = skip.get_editor_property("widget_style")
+for state in ("normal", "hovered", "pressed", "disabled"):
+    sst.set_editor_property(state, box_brush(INK, None, 0.0, 0.0, alpha=0.0))
+skip.set_editor_property("widget_style", sst)
+canvas("WBP_Memory", "CaptionPanel", (0.5, 1, 0.5, 1), (0, -90), (0, 0), (0.5, 1), auto=True)
+panel("WBP_Memory", "CaptionPanel", "#0F1A24", None, (28, 14, 28, 14), alpha=0.85, radius=6.0)
+text("WBP_Memory", "Caption", "", 20, "#CDEFFB", MONO_B, C, 40)
+text("WBP_Memory", "SkipHint", "CLICK TO SKIP", 12, "#CDEFFB", MONO, C, 200)
+canvas("WBP_Memory", "SkipHint", (0.5, 1, 0.5, 1), (0, -44), (0, 0), (0.5, 1), auto=True)
+
 # ---- Full-screen banners.
 for wbp, fill_c, ink_c, tag, title, sub in (
         ("WBP_Sweep", HEAT, "#FFF6EA", "MAX HEAT", "IMPERIAL SWEEP", "Heat hit the limit. Back to the checkpoint outside the mine."),
@@ -181,6 +197,17 @@ text("WBP_EditBay", "SlotsText", "ARM: -    TREADS: -    BATTERY: -", 17, INK, M
 pad("WBP_EditBay", "SlotsText", 0, 30, 0, 0)
 text("WBP_EditBay", "StripText", "FILM STRIP:  (empty)", 17, INK, MONO_B).set_editor_property("auto_wrap_text", True)
 pad("WBP_EditBay", "StripText", 0, 14, 0, 0)
+# Blue means banned tech: DRILL+ and the core get the blue outline.
+for b, label in (("BtnDrillPlus", "DRILL+"), ("BtnSpliceCore", "SPLICE CORE")):
+    button("WBP_EditBay", b, label, False, 12)
+    bw = W("WBP_EditBay", b)
+    bs = bw.get_editor_property("widget_style")
+    bs.set_editor_property("normal", box_brush(PAPER, "#1F5F80", 3.0, 8.0))
+    bs.set_editor_property("hovered", box_brush("#DDF3FB", "#1F5F80", 3.0, 8.0))
+    bs.set_editor_property("pressed", box_brush("#B8E4F5", "#1F5F80", 3.0, 8.0))
+    bw.set_editor_property("widget_style", bs)
+    text("WBP_EditBay", b + "Label", label, 12, "#1F5F80", MICHROMA, C, 200)
+    pad("WBP_EditBay", b, 0, 0, 12, 0)
 button("WBP_EditBay", "BtnClear", "CLEAR STRIP", False)
 button("WBP_EditBay", "BtnDeploy", "DEPLOY", True)
 button("WBP_EditBay", "BtnClose", "EXIT [TAB]", False)
@@ -201,7 +228,7 @@ pad("WBP_End", "EndSub", 0, 16, 0, 44)
 button("WBP_End", "BtnRestart", "RESTART", False, 14)
 
 out = []
-for w in ("WBP_HUD", "WBP_EditBay", "WBP_End", "WBP_Sweep", "WBP_TakeTwo"):
+for w in ("WBP_HUD", "WBP_EditBay", "WBP_End", "WBP_Sweep", "WBP_TakeTwo", "WBP_Memory"):
     bp = unreal.load_asset(f"/Game/Splice/UI/{w}")
     unreal.BlueprintEditorLibrary.compile_blueprint(bp)
     unreal.EditorAssetLibrary.save_asset(f"/Game/Splice/UI/{w}")
