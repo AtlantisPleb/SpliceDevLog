@@ -41,10 +41,18 @@ for a in old_rubble:
     r.set_folder_path("Gameplay/Rubble")
     eas.destroy_actor(a)
     n += 1
-if n == 0:  # already converted on an earlier run: re-label existing BP_Rubble actors
-    for a in eas.get_all_level_actors():
-        if a.get_class() == bpc("BP_Rubble"):
-            n += 1
+if n == 0:
+    # No placeholder cubes left (this is a re-run): rebuild the wall directly, with the
+    # same 5 x 5 grid the level script uses.
+    grid = [(y, z) for z in range(0, 350, 70) for y in range(-200, 200, 80)]
+    for i, (dy, dz) in enumerate(grid):
+        x0, x1 = 2880 + (i % 3) * 8, 2960 - (i % 2) * 10
+        r = eas.spawn_actor_from_class(bpc("BP_Rubble"), unreal.Vector((x0 + x1) / 2, dy + 40, dz + 35))
+        r.set_actor_scale3d(unreal.Vector((x1 - x0) / 100, 0.8, 0.7))
+        r.get_component_by_class(unreal.StaticMeshComponent).set_material(0, mat("M_Rubble"))
+        r.set_actor_label(f"RubbleBP_{i:02d}")
+        r.set_folder_path("Gameplay/Rubble")
+        n += 1
 
 spawn = eas.spawn_actor_from_class(unreal.TargetPoint, unreal.Vector(2280, 0, 50), unreal.Rotator(pitch=0, yaw=0, roll=0))
 spawn.set_actor_label("BotSpawn")

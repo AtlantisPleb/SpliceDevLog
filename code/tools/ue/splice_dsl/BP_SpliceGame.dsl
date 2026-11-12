@@ -5,8 +5,18 @@
   (bind hud (`|CreateWidget` :`Class` "/Game/Splice/UI/WBP_HUD.WBP_HUD_C" :`OwningPlayer` pc))
   (set `self.HUD` hud)
   (`UserWidget.AddToViewport` :`self` hud)
-  (`self.RefreshHUD`)
+  (set `self.Hearts` (`/Game/Splice/Data/BP_Tuning.MaxHearts` (`self.Tuning`)))
+  (set `self.Objective` "Splice the Digger, drill the rubble")
+  (`self.SetPhase` 1)
   (`self.ShowMessage` "Find the Digger's parts in the scrap room."))
+
+; Heat cools only while the player is at the rover.
+(event `self.ReceiveTick`
+  (params (DeltaSeconds))
+  (if (and (`self.NearRover`) (> (`self.Heat`) 0.0))
+    (set `self.Heat` (`KismetMathLibrary.FMax` 0.0
+      (- (`self.Heat`) (* (`/Game/Splice/Data/BP_Tuning.HeatCoolRate` (`self.Tuning`)) DeltaSeconds))))
+    (`self.RefreshHUD`)))
 
 ; E opens or closes the edit bay when the player is at the rover.
 (event `Key|E`
@@ -118,6 +128,7 @@
   (set `self.BotRunning` false)
   (if Success
     (`self.ShowMessage` "Scene cut clean. The tunnel is open!")
+    (`self.SetObjective` "Go through the tunnel")
     (else
       (`self.ShowMessage` "Bad cut. Re-edit at the rover.")))
   (`self.RefreshHUD`))
@@ -129,9 +140,104 @@
   (`KismetSystemLibrary.Delay` 3.5)
   (`TextBlock.SetText` msgText ""))
 
+; Reaching the rover is the checkpoint: it saves what you carry.
 (event `SetNearRover`
   (params (Near :type Boolean))
   (set `self.NearRover` Near)
+  (if Near
+    (`self.SaveCheckpoint`))
+  (`self.RefreshHUD`))
+
+(event `SaveCheckpoint`
+  (set `self.SavedInventory` (`self.Inventory`))
+  (set `self.BannedSaved` (`self.BannedCarried`))
+  (for frag (`GameplayStatics.GetAllActorsOfClass` "/Game/Splice/Blueprints/BP_Fragment.BP_Fragment_C")
+    (`/Game/Splice/Blueprints/BP_Fragment.OnCheckpoint` frag)))
+
+; ---- Heat, hearts and respawn (vertical slice steps 9 and 10)
+
+(event `PickUpBanned`
+  (set `self.BannedCarried` (+ (`self.BannedCarried`) 1))
+  (`self.AddHeat` (`/Game/Splice/Data/BP_Tuning.HeatPerBannedPiece` (`self.Tuning`)))
+  (`self.ShowMessage` "Banned piece  ·  Heat is rising"))
+
+(event `AddHeat`
+  (params (Amount :type "Float (double-precision)"))
+  (bind maxHeat (`/Game/Splice/Data/BP_Tuning.MaxHeat` (`self.Tuning`)))
+  (set `self.Heat` (`KismetMathLibrary.FMin` maxHeat (+ (`self.Heat`) Amount)))
+  (`self.RefreshHUD`)
+  (if (and (>= (`self.Heat`) maxHeat) (not (`self.Busy`)))
+    (`self.Sweep`)))
+
+; Max Heat: the Imperial Sweep banner, then back to the checkpoint.
+(event `Sweep`
+  (set `self.Busy` true)
+  (bind pc (`GameplayStatics.GetPlayerController` 0))
+  (bind banner (`|CreateWidget` :`Class` "/Game/Splice/UI/WBP_Sweep.WBP_Sweep_C" :`OwningPlayer` pc))
+  (`UserWidget.AddToViewport` :`self` banner)
+  (`KismetSystemLibrary.Delay` (`/Game/Splice/Data/BP_Tuning.SweepBannerTime` (`self.Tuning`)))
+  (`Widget.RemoveFromParent` banner)
+  (`self.Respawn`)
+  (set `self.Busy` false))
+
+; A raider hit or a boss sweep costs one heart.
+; After a hit the player can't be hit again for RaiderHitCooldown seconds, so a crowd
+; of raiders can't take every heart at once.
+(event `DamagePlayer`
+  (bind now (`GameplayStatics.GetTimeSeconds`))
+  (if (or (`self.Busy`)
+          (< (- now (`self.LastDamage`)) (`/Game/Splice/Data/BP_Tuning.RaiderHitCooldown` (`self.Tuning`))))
+    (return))
+  (set `self.LastDamage` now)
+  (set `self.Hearts` (- (`self.Hearts`) 1))
+  (`self.RefreshHUD`)
+  (if (<= (`self.Hearts`) 0)
+    (`self.TakeTwo`)
+    (else
+      (`self.ShowMessage` "Hit!  You lost a heart"))))
+
+; Out of hearts: "CUT. TAKE TWO.", then back to the checkpoint.
+(event `TakeTwo`
+  (set `self.Busy` true)
+  (bind pc (`GameplayStatics.GetPlayerController` 0))
+  (bind banner (`|CreateWidget` :`Class` "/Game/Splice/UI/WBP_TakeTwo.WBP_TakeTwo_C" :`OwningPlayer` pc))
+  (`UserWidget.AddToViewport` :`self` banner)
+  (`KismetSystemLibrary.Delay` (`/Game/Splice/Data/BP_Tuning.SweepBannerTime` (`self.Tuning`)))
+  (`Widget.RemoveFromParent` banner)
+  (`self.Respawn`)
+  (set `self.Busy` false))
+
+; Back at the checkpoint with the inventory saved there. Banned pieces picked up
+; since then are lost and reappear in the level.
+(event `Respawn`
+  (set `self.Hearts` (`/Game/Splice/Data/BP_Tuning.MaxHearts` (`self.Tuning`)))
+  (set `self.Heat` 0.0)
+  (set `self.Inventory` (`self.SavedInventory`))
+  (set `self.BannedCarried` (`self.BannedSaved`))
+  ; Move the player first: a piece that reappears under the player would be picked
+  ; straight back up.
+  (bind point (`self.RespawnPoint`))
+  (bind pawn (`GameplayStatics.GetPlayerPawn` 0))
+  (if (and (`KismetSystemLibrary.IsValid` point) (`KismetSystemLibrary.IsValid` pawn))
+    (`Actor.K2_TeleportTo` pawn (`Actor.K2_GetActorLocation` point) (`Actor.K2_GetActorRotation` point)))
+  (for frag (`GameplayStatics.GetAllActorsOfClass` "/Game/Splice/Blueprints/BP_Fragment.BP_Fragment_C")
+    (`/Game/Splice/Blueprints/BP_Fragment.OnRespawn` frag))
+  (`self.RefreshHUD`))
+
+; ---- Time of day and objective (step 8)
+
+; Phase: 0 dawn, 1 day, 2 dusk, 3 night.
+(event `SetPhase`
+  (params (Index :type Integer))
+  (set `self.Phase` Index)
+  (bind tod (`GameplayStatics.GetActorOfClass` "/Game/Splice/Blueprints/BP_TimeOfDay.BP_TimeOfDay_C"))
+  (if (`KismetSystemLibrary.IsValid` tod)
+    (`/Game/Splice/Blueprints/BP_TimeOfDay.Apply` tod Index))
+  (`self.RefreshHUD`))
+
+(event `SetObjective`
+  (params (Text :type String))
+  (set `self.Objective` Text)
   (`self.RefreshHUD`))
 
 (event `RefreshHUD`
@@ -139,17 +245,49 @@
   (if (not (`KismetSystemLibrary.IsValid` hud))
     (return))
   (bind inv (`self.Inventory`))
+  (bind banned (`self.BannedCarried`))
   (`TextBlock.SetText` (`/Game/Splice/UI/WBP_HUD.CarryText` hud)
     (`KismetTextLibrary.Conv_StringToText`
-      (`KismetStringLibrary.Concat_StrStr` "Carrying: "
-        (select `bool` (== (`KismetArrayLibrary.Array_Length` inv) 0)
-          :`true` "nothing"
-          :`false` (`KismetStringLibrary.JoinStringArray` inv ", ")))))
+      (`KismetStringLibrary.Concat_StrStr`
+        (`KismetStringLibrary.Concat_StrStr` "Carrying: "
+          (select `bool` (== (`KismetArrayLibrary.Array_Length` inv) 0)
+            :`true` "nothing"
+            :`false` (`KismetStringLibrary.JoinStringArray` inv ", ")))
+        (select `bool` (> banned 0)
+          :`true` (`KismetStringLibrary.Concat_StrStr` "  ·  Banned pieces: " (`KismetStringLibrary.Conv_IntToString` banned))
+          :`false` ""))))
   (`TextBlock.SetText` (`/Game/Splice/UI/WBP_HUD.PromptText` hud)
     (`KismetTextLibrary.Conv_StringToText`
       (select `bool` (and (`self.NearRover`) (not (`self.BayOpen`)) (not (`self.BotRunning`)))
         :`true` "[TAB] or [E]  ·  Open the edit bay"
-        :`false` ""))))
+        :`false` "")))
+  ; Hearts: lost ones fade out.
+  (bind hearts (`self.Hearts`))
+  (`Widget.SetRenderOpacity` (`/Game/Splice/UI/WBP_HUD.Heart1` hud) (select `bool` (>= hearts 1) :`true` 1.0 :`false` 0.18))
+  (`Widget.SetRenderOpacity` (`/Game/Splice/UI/WBP_HUD.Heart2` hud) (select `bool` (>= hearts 2) :`true` 1.0 :`false` 0.18))
+  (`Widget.SetRenderOpacity` (`/Game/Splice/UI/WBP_HUD.Heart3` hud) (select `bool` (>= hearts 3) :`true` 1.0 :`false` 0.18))
+  ; Heat meter: thirds are Cool, Warm, Wanted.
+  (bind heat (`self.Heat`))
+  (bind maxHeat (`/Game/Splice/Data/BP_Tuning.MaxHeat` (`self.Tuning`)))
+  (bind heat01 (/ heat (`KismetMathLibrary.FMax` maxHeat 1.0)))
+  (`ProgressBar.SetPercent` (`/Game/Splice/UI/WBP_HUD.HeatBar` hud) heat01)
+  (`TextBlock.SetText` (`/Game/Splice/UI/WBP_HUD.HeatText` hud)
+    (`KismetTextLibrary.Conv_StringToText`
+      (`KismetStringLibrary.Concat_StrStr` "HEAT "
+        (`KismetStringLibrary.Concat_StrStr` (`KismetStringLibrary.Conv_IntToString` (`KismetMathLibrary.Round` heat))
+          (`KismetStringLibrary.Concat_StrStr` " / "
+            (`KismetStringLibrary.Concat_StrStr` (`KismetStringLibrary.Conv_IntToString` (`KismetMathLibrary.Round` maxHeat))
+              (select `bool` (< heat01 0.334)
+                :`true` "  ·  COOL"
+                :`false` (select `bool` (< heat01 0.667) :`true` "  ·  WARM" :`false` "  ·  WANTED"))))))))
+  ; Phase chips: the current one is solid.
+  (bind phase (`self.Phase`))
+  (`Widget.SetRenderOpacity` (`/Game/Splice/UI/WBP_HUD.Phase0` hud) (select `bool` (== phase 0) :`true` 1.0 :`false` 0.45))
+  (`Widget.SetRenderOpacity` (`/Game/Splice/UI/WBP_HUD.Phase1` hud) (select `bool` (== phase 1) :`true` 1.0 :`false` 0.45))
+  (`Widget.SetRenderOpacity` (`/Game/Splice/UI/WBP_HUD.Phase2` hud) (select `bool` (== phase 2) :`true` 1.0 :`false` 0.45))
+  (`Widget.SetRenderOpacity` (`/Game/Splice/UI/WBP_HUD.Phase3` hud) (select `bool` (== phase 3) :`true` 1.0 :`false` 0.45))
+  (`TextBlock.SetText` (`/Game/Splice/UI/WBP_HUD.ObjectiveText` hud)
+    (`KismetTextLibrary.Conv_StringToText` (`self.Objective`))))
 
 (event `RefreshEditBay`
   (bind bay (`self.EditBay`))
@@ -203,3 +341,10 @@
 
 (event `ClickRestart`
   (`GameplayStatics.OpenLevel` :`LevelName` "L_Mine"))
+
+; Test aid: move the player. The browser test calls it from the console
+; ("ke * DebugTeleport 4300 0 100"). Console commands are off in Shipping builds.
+(event `DebugTeleport`
+  (params (X :type "Float (double-precision)") (Y :type "Float (double-precision)") (Z :type "Float (double-precision)"))
+  (bind pawn (`GameplayStatics.GetPlayerPawn` 0))
+  (`Actor.K2_TeleportTo` pawn (`KismetMathLibrary.MakeVector` X Y Z) (`Actor.K2_GetActorRotation` pawn)))

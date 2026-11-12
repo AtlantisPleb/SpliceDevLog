@@ -36,7 +36,22 @@ class ToolError(RuntimeError):
 
 
 def tool(full_name, **arguments):
-    """Call Toolset.Tool (full dotted name). Returns parsed JSON or text."""
+    """Call Toolset.Tool (full dotted name). Returns parsed JSON or text.
+
+    If the editor is busy with a slow task (saving, compiling shaders), it refuses tool
+    calls without making changes; wait and retry for up to 5 minutes.
+    """
+    import time
+    for attempt in range(60):
+        try:
+            return _tool_once(full_name, **arguments)
+        except ToolError as e:
+            if "running a slow task" not in str(e) or attempt == 59:
+                raise
+            time.sleep(5)
+
+
+def _tool_once(full_name, **arguments):
     _init()
     toolset, name = full_name.rsplit(".", 1)
     d = _post({"jsonrpc": "2.0", "id": 2, "method": "tools/call",

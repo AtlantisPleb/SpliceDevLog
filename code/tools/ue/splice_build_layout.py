@@ -100,12 +100,72 @@ def pad(wbp, name, l, t, r, b):
 C = unreal.TextJustify.CENTER
 
 # ---- HUD: lettering sits straight on the 3D view, so it is paper with an ink outline.
-text("WBP_HUD", "CarryText", "Carrying: nothing", 15, PAPER, MONO_B, None, 40, INK)
+text("WBP_HUD", "CarryText", "Carrying: nothing", 16, PAPER, MONO_B, None, 40, INK)
 canvas("WBP_HUD", "CarryText", (0, 0, 0, 0), (28, 24), (0, 0), (0, 0), auto=True)
 text("WBP_HUD", "PromptText", "", 19, PAPER, MONO_B, C, 40, INK)
 canvas("WBP_HUD", "PromptText", (0.5, 1, 0.5, 1), (0, -72), (0, 0), (0.5, 0.5), auto=True)
 text("WBP_HUD", "MessageText", "", 22, PAPER, MONO_B, C, 40, INK)
 canvas("WBP_HUD", "MessageText", (0.5, 0.26, 0.5, 0.26), (0, 0), (0, 0), (0.5, 0.5), auto=True)
+
+# ---- HUD panels from the Game UI board.
+GLOW = "#4FB3D9"
+canvas("WBP_HUD", "HeartsPanel", (0, 0, 0, 0), (24, 24), (0, 0), (0, 0), auto=True)
+panel("WBP_HUD", "HeartsPanel", PAPER, INK, (16, 10, 16, 12))
+text("WBP_HUD", "HeartsLabel", "HEARTS", 12, INK, MONO_B, None, 150)
+pad("WBP_HUD", "HeartsRow", 0, 6, 0, 0)
+for i in (1, 2, 3):
+    h = panel("WBP_HUD", f"Heart{i}", HEAT, INK, (0, 0, 0, 0), radius=7.0)
+    pad("WBP_HUD", f"Heart{i}", 0, 0, 8, 0)
+    sb = W("WBP_HUD", f"Heart{i}Size")
+    # The setters also switch the override on; setting the property alone does not.
+    sb.set_width_override(40.0)
+    sb.set_height_override(30.0)
+canvas("WBP_HUD", "CarryText", (0, 0, 0, 0), (28, 124), (0, 0), (0, 0), auto=True)
+
+canvas("WBP_HUD", "PhaseBar", (0.5, 0, 0.5, 0), (0, 24), (0, 0), (0.5, 0), auto=True)
+panel("WBP_HUD", "PhaseBar", INK, None, (6, 6, 6, 6), radius=6.0)
+for i, word in enumerate(("DAWN", "DAY", "DUSK", "NIGHT")):
+    panel("WBP_HUD", f"Phase{i}", PAPER, None, (20, 9, 20, 9), radius=3.0)
+    pad("WBP_HUD", f"Phase{i}", 0, 0, 0 if i == 3 else 6, 0)
+    text("WBP_HUD", f"Phase{i}Label", word, 13, INK, MONO_B, C, 100)
+
+canvas("WBP_HUD", "HeatPanel", (1, 0, 1, 0), (-24, 24), (380, 132), (1, 0))
+panel("WBP_HUD", "HeatPanel", PAPER, INK, (16, 12, 16, 12))
+text("WBP_HUD", "HeatText", "HEAT 0 / 100  ·  COOL", 15, HEAT, MONO_B, None, 80)
+bar = W("WBP_HUD", "HeatBar")
+bst = bar.get_editor_property("widget_style")
+bg = box_brush(PAPER, INK, 2.0, 3.0)
+bg.set_editor_property("image_size", unreal.DeprecateSlateVector2D(344.0, 18.0))
+fill = box_brush(HEAT, None, 0.0, 2.0)
+fill.set_editor_property("image_size", unreal.DeprecateSlateVector2D(344.0, 18.0))
+bst.set_editor_property("background_image", bg)
+bst.set_editor_property("fill_image", fill)
+bar.set_editor_property("widget_style", bst)
+bar.set_editor_property("fill_color_and_opacity", unreal.LinearColor(1, 1, 1, 1))
+bar.set_editor_property("percent", 0.0)
+pad("WBP_HUD", "HeatBar", 0, 8, 0, 6)
+text("WBP_HUD", "HeatBands", "COOL            WARM           WANTED", 11, INK, MONO, None, 60)
+text("WBP_HUD", "HeatNote", "Banned pieces raise it. Cools at the rover.", 10, INK, MONO)
+pad("WBP_HUD", "HeatNote", 0, 4, 0, 0)
+
+canvas("WBP_HUD", "ObjectivePanel", (1, 1, 1, 1), (-24, -24), (400, 112), (1, 1))
+panel("WBP_HUD", "ObjectivePanel", PAPER, INK, (16, 12, 16, 12))
+text("WBP_HUD", "ObjectiveLabel", "OBJECTIVE", 12, INK, MONO_B, None, 150)
+text("WBP_HUD", "ObjectiveText", "", 14, INK, MICHROMA, None, 40).set_editor_property("auto_wrap_text", True)
+pad("WBP_HUD", "ObjectiveText", 0, 8, 0, 0)
+
+# ---- Full-screen banners.
+for wbp, fill_c, ink_c, tag, title, sub in (
+        ("WBP_Sweep", HEAT, "#FFF6EA", "MAX HEAT", "IMPERIAL SWEEP", "Heat hit the limit. Back to the checkpoint outside the mine."),
+        ("WBP_TakeTwo", INK, PAPER, "0 HEARTS", "CUT. TAKE TWO.", "Back at the rover with your checkpoint inventory. Banned pieces since then are lost.")):
+    canvas(wbp, "Backdrop", (0, 0, 1, 1), (0, 0), (0, 0), (0, 0))
+    bd = panel(wbp, "Backdrop", fill_c, None, (0, 0, 0, 0), radius=0.0)
+    bd.set_editor_property("horizontal_alignment", unreal.HorizontalAlignment.H_ALIGN_CENTER)
+    bd.set_editor_property("vertical_alignment", unreal.VerticalAlignment.V_ALIGN_CENTER)
+    text(wbp, "Tag", tag, 14, ink_c, MONO_B, C, 200)
+    text(wbp, "Title", title, 40, ink_c, MICHROMA, C, 400)
+    pad(wbp, "Title", 0, 14, 0, 14)
+    text(wbp, "Sub", sub, 17, ink_c, MONO, C, 40)
 
 # ---- Edit bay: a paper desk with an ink frame.
 canvas("WBP_EditBay", "Panel", (0.5, 0.5, 0.5, 0.5), (0, 0), (1120, 560), (0.5, 0.5))
@@ -141,7 +201,7 @@ pad("WBP_End", "EndSub", 0, 16, 0, 44)
 button("WBP_End", "BtnRestart", "RESTART", False, 14)
 
 out = []
-for w in ("WBP_HUD", "WBP_EditBay", "WBP_End"):
+for w in ("WBP_HUD", "WBP_EditBay", "WBP_End", "WBP_Sweep", "WBP_TakeTwo"):
     bp = unreal.load_asset(f"/Game/Splice/UI/{w}")
     unreal.BlueprintEditorLibrary.compile_blueprint(bp)
     unreal.EditorAssetLibrary.save_asset(f"/Game/Splice/UI/{w}")

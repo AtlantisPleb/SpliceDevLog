@@ -117,3 +117,4 @@ On the last day:
 | [0002](https://github.com/AtlantisPleb/SpliceDevLog/blob/main/entries/0002-splice-mine-graybox.md) | 2026-11-12 | Splice gray box, step 1: the mine |
 | [0003](https://github.com/AtlantisPleb/SpliceDevLog/blob/main/entries/0003-splice-full-loop.md) | 2026-11-12 | Splice gray box, steps 2–7: the full loop |
 | [0004](https://github.com/AtlantisPleb/SpliceDevLog/blob/main/entries/0004-web-build-and-look.md) | 2026-11-12 | First web build, and a look that survives it |
+| [0005](https://github.com/AtlantisPleb/SpliceDevLog/blob/main/entries/0005-night-heat-raiders.md) | 2026-11-12 | Night, Heat, raiders and hearts (slice steps 8–10) |

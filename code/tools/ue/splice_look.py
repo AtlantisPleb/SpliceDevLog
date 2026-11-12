@@ -132,10 +132,31 @@ float sc = max(VS.y / 720.0, 1.0);
 float2 p = UV * VS / sc;
 float grain = frac(sin(dot(floor(p), float2(12.9898, 78.233))) * 43758.5453);
 float3 ink = float3(0.118, 0.106, 0.094);
-float3 outc = lerp(Col, ink, edge * 0.92);
+// Time of day (MPC_Splice): depth fog first, then lines, then a tint over everything.
+float3 outc = lerp(Col, Fog.rgb, Fog.a * saturate(DC / 5000.0));
+outc = lerp(outc, ink, edge * 0.92);
+// Blue-dominant pixels (banned tech, the glow) keep their colour so they shine at night.
+float keep = saturate((outc.b - max(outc.r, outc.g) - 0.10) * 6.0);
+outc *= lerp(Tint.rgb, float3(1.0, 1.0, 1.0), keep);
 outc *= 0.97 + 0.03 * grain;
 return saturate(outc);
 """
+# MPC_Splice holds the time-of-day look. BP_TimeOfDay writes it at run time.
+mpc_path = f"{MAT_DIR}/MPC_Splice"
+reg = unreal.AssetRegistryHelpers.get_asset_registry()
+if reg.get_assets_by_package_name(mpc_path):
+    mpc = unreal.load_asset(mpc_path)
+else:
+    mpc = tools.create_asset("MPC_Splice", MAT_DIR, unreal.MaterialParameterCollection,
+                             unreal.MaterialParameterCollectionFactoryNew())
+vps = []
+for pname, val in (("Tint", (1.0, 1.0, 1.0, 1.0)), ("Fog", (1.0, 1.0, 1.0, 0.0))):
+    vp = unreal.CollectionVectorParameter()
+    vp.set_editor_property("parameter_name", pname)
+    vp.set_editor_property("default_value", unreal.LinearColor(*val))
+    vps.append(vp)
+mpc.set_editor_property("vector_parameters", vps)
+unreal.EditorAssetLibrary.save_asset(mpc_path)
 ink = get_or_create("M_Ink")
 ink.set_editor_property("material_domain", unreal.MaterialDomain.MD_POST_PROCESS)
 ink.set_editor_property("blendable_location", unreal.BlendableLocation.BL_SCENE_COLOR_AFTER_TONEMAPPING)
@@ -162,8 +183,13 @@ col.set_editor_property("scene_texture_id", unreal.SceneTextureId.PPI_POST_PROCE
 thr = mel.create_material_expression(ink, unreal.MaterialExpressionScalarParameter, -1100, 600)
 thr.set_editor_property("parameter_name", "Threshold")
 thr.set_editor_property("default_value", __THRESHOLD__)
-c = custom(ink, INK, ["Col", "DC", "DL", "DR", "DU", "DD", "UV", "VS", "T"],
+c = custom(ink, INK, ["Col", "DC", "DL", "DR", "DU", "DD", "UV", "VS", "T", "Tint", "Fog"],
            unreal.CustomMaterialOutputType.CMOT_FLOAT3, -500, -200)
+for pname in ("Tint", "Fog"):
+    cp = mel.create_material_expression(ink, unreal.MaterialExpressionCollectionParameter, -1100, 800)
+    cp.set_editor_property("collection", mpc)
+    cp.set_editor_property("parameter_name", pname)
+    mel.connect_material_expressions(cp, "", c, pname)
 mel.connect_material_expressions(col, "Color", c, "Col")
 for k in "CLRUD":
     mel.connect_material_expressions(depths[k], "", c, "D" + k)

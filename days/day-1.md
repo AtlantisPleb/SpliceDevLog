@@ -18,6 +18,9 @@ to end. Everything is Blueprints, with no C++.
 | 5 | `BP_Bot`, the Digger, which runs its cards in order: MOVE drives up to the rubble, DRILL cuts through it | Done |
 | 6 | `BP_Rubble`. A wrong cut shows "Bad cut. Re-edit at the rover." and lets you re-cut | Done |
 | 7 | `BP_EndTrigger` and the "SCENE RESTORED" screen, with a Restart button | Done |
+| 8 | Day turns to night past the rubble; objective panel and phase label | Done |
+| 9 | Party Room, banned pieces, Heat meter, Imperial Sweep | Done |
+| 10 | Raiders, hearts, checkpoint | Done |
 | Look | Flat comic materials and ink lines, the same on both web tiers | Done; art still to come |
 | Web | First web build, tested in Chrome on both renderer tiers | Done |
 | UI | Restyled to Kiki's Game UI board: paper, ink, Michroma, IBM Plex Mono | Style done; layout still gray-box |
@@ -36,6 +39,12 @@ to end. Everything is Blueprints, with no C++.
 | ![Start](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0003/play_01_start.png) | ![Rover prompt](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0003/play_03_rover_prompt.png) |
 | ![Edit bay, wrong order](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0003/play_04_bay_wrong_order.png) | ![Bad cut](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0003/play_06_bad_cut.png) |
 | ![Edit bay, right order](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0003/play_07_bay_right_order.png) | ![Scene restored](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0003/play_10_scene_restored.png) |
+
+The night zone, in the browser ([build note 0005](../entries/0005-night-heat-raiders.md)):
+
+| | |
+|---|---|
+| ![Party room at night](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0005/web_c_party_room.png) | ![On the catwalk, Heat at 50](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0005/web_d_catwalk.png) |
 
 In the browser, on the web build's forward tier, with the new look and UI:
 
@@ -76,6 +85,8 @@ post-process shader on, too.
 | Setting `bShowMouseCursor` and the bot's `Cards` failed | Same cause: positional values went into the wrong pins | Name every pin on setters |
 | No way to break a trace's hit result in the graph format | `HitResult` has a native break function the format can't express | The mine runs straight along +X, so the bot measures its distance to the rubble on the X axis instead of tracing |
 | The Moebius shader wiped out the 3D view on the web's forward tier | It read buffers that tier doesn't have | Rebuilt the look as unlit comic materials plus a depth-only ink pass ([build note 0004](../entries/0004-web-build-and-look.md)) |
+| Three hearts gone in under three seconds | Each raider had its own hit cooldown, and several arrived together | The player holds the cooldown instead |
+| A lost banned piece was picked straight back up on respawn | Pieces reappeared before the player was moved | Move the player first |
 | Couldn't test the E key by script | macOS blocks scripted keystrokes | Tested the same event directly, then pressed real E and TAB keys in the web build through a browser test |
 
 Details: [build note 0002](../entries/0002-splice-mine-graybox.md) · [build note 0003](../entries/0003-splice-full-loop.md)

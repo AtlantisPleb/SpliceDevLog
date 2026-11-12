@@ -19,10 +19,17 @@ STUBS = {
 (event `SetNearRover` (params (Near :type Boolean)))
 (event `BotFinished` (params (Success :type Boolean)))
 (event `ShowEnd`)
+(event `PickUpBanned`)
+(event `DamagePlayer`)
+(event `SetPhase` (params (Index :type Integer)))
+(event `SetObjective` (params (Text :type String)))
 """,
     "BP_Bot": "(event `Run`)",
+    "BP_Fragment": "(event `OnCheckpoint`)\n(event `OnRespawn`)",
+    "BP_TimeOfDay": "(event `Apply` (params (Index :type Integer)))",
 }
-ORDER = ["BP_Rubble", "BP_SpliceGame", "BP_Bot", "BP_Rover", "BP_Fragment", "BP_EndTrigger"]
+ORDER = ["BP_Rubble", "BP_TimeOfDay", "BP_SpliceGame", "BP_Bot", "BP_Rover", "BP_Fragment", "BP_EndTrigger",
+         "BP_PhaseTrigger", "BP_Raider"]
 
 
 def write(bp, dsl):
@@ -56,7 +63,7 @@ for bp in ORDER:
 
 print(py(r'''
 out = []
-for n in ["BP_Rubble", "BP_SpliceGame", "BP_Bot", "BP_Rover", "BP_Fragment", "BP_EndTrigger"]:
+for n in ["BP_Rubble", "BP_TimeOfDay", "BP_SpliceGame", "BP_Bot", "BP_Rover", "BP_Fragment", "BP_EndTrigger", "BP_PhaseTrigger", "BP_Raider"]:
     bp = unreal.load_asset("/Game/Splice/Blueprints/" + n)
     unreal.BlueprintEditorLibrary.compile_blueprint(bp)
     st = bp.get_editor_property("status")
