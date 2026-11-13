@@ -1,6 +1,6 @@
 [Home](../index.md) · [Devlog](../devlog.md) · [How We Used AI](../how-we-used-ai.md) · [Play](../play.md)
 
-# Day 2 (Nov 14)
+# Day 2 (Nov 13)
 
 ## What we built today
 

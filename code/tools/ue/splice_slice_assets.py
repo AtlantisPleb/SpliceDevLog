@@ -24,45 +24,58 @@ WBT = "UMGEditor.WidgetBlueprintEditorSubsystem"
 TUNING = [
     # Heat and hearts
     ("HeatPerBannedPiece", "float", 25.0),
-    ("HeatPerFight", "float", 15.0),
+    ("HeatPerFight", "float", 10.0),
     ("MaxHeat", "float", 100.0),
     ("HeatCoolRate", "float", 5.0),
     ("MaxHearts", "int", 3),
     ("SweepBannerTime", "float", 2.0),
     # Raiders and Imperial robots
     ("NoticeRange", "float", 500.0),
-    ("RaiderSpeed", "float", 260.0),
-    ("RaiderWanderSpeed", "float", 90.0),
-    ("RaiderHitRange", "float", 110.0),
+    ("NoticePerHeat", "float", 7.0),
+    ("RaiderSpeed", "float", 350.0),
+    ("RaiderWanderSpeed", "float", 120.0),
+    ("RaiderHitRange", "float", 95.0),
     ("RaiderHitCooldown", "float", 1.0),
     ("RaiderGiveUpDistance", "float", 1500.0),
     ("RaiderHP", "int", 2),
     ("ImperialHP", "int", 3),
     ("ImperialNoticeRange", "float", 800.0),
     ("ImperialSpeed", "float", 300.0),
-    ("ImperialPatrolSpeed", "float", 140.0),
+    ("ImperialPatrolSpeed", "float", 180.0),
     ("CatwalkSafeHeight", "float", 150.0),
-    # The player's F: hit or stun
-    ("AttackRange", "float", 200.0),
+    # The player
+    ("WalkSpeed", "float", 560.0),
+    ("AttackRange", "float", 220.0),
     ("AttackCooldown", "float", 0.4),
-    ("StunDuration", "float", 1.0),
+    ("StunDuration", "float", 0.6),
+    ("Knockback", "float", 130.0),
     # The Digger
-    ("DiggerFollowSpeed", "float", 700.0),
-    ("DiggerTravelSpeed", "float", 600.0),
-    ("DiggerSnapDistance", "float", 1500.0),
+    ("DiggerFollowSpeed", "float", 750.0),
+    ("DiggerTravelSpeed", "float", 650.0),
+    ("DiggerSnapDistance", "float", 1200.0),
     ("DiggerCardInterval", "float", 2.4),
     ("DiggerStopShort", "float", 190.0),
     ("DiggerMaxMove", "float", 500.0),
     ("DiggerDrillReach", "float", 260.0),
     # Rover and stash crate
     ("RoverRange", "float", 450.0),
-    ("CrateRange", "float", 350.0),
+    ("CrateRange", "float", 450.0),
     # Boss and ending
-    ("BossSweepTime", "float", 4.0),
+    ("BossSweepTime", "float", 4.6),
+    ("BossSweepSpin", "float", 1.3),
+    ("BossSweepWarn", "float", 0.9),
     ("BossWakeRange", "float", 1100.0),
-    ("BossSweepRange", "float", 420.0),
-    ("BossStunReach", "float", 230.0),
+    ("BossSweepRange", "float", 620.0),
+    ("BossStunReach", "float", 200.0),
     ("MemoryCaptionTime", "float", 5.0),
+    # Village and rail
+    ("ScannerPassTime", "float", 2.2),
+    ("RailLength", "float", 30000.0),
+    ("RailPing", "float", 15000.0),
+    ("RailSpeed", "float", 1100.0),
+    ("RailSlow", "float", 500.0),
+    ("RailFast", "float", 2000.0),
+    ("RailAccel", "float", 800.0),
 ]
 
 
@@ -108,7 +121,8 @@ NEW_BPS = [(f"{DATA}/BP_Tuning", "PrimaryDataAsset"), (f"{BP}/BP_TimeOfDay", "Ac
            (f"{BP}/BP_PhaseTrigger", "Actor"), (f"{BP}/BP_Raider", "Actor"), (f"{BP}/BP_Checkpoint", "Actor"),
            (f"{BP}/BP_Imperial", "Actor"), (f"{BP}/BP_StashCrate", "Actor"), (f"{BP}/BP_BossWall", "Actor"),
            (f"{BP}/BP_Boss", "Actor"), (f"{BP}/BP_BannedCore", "Actor"), (f"{BP}/BP_Spinner", "Actor"),
-           (f"{BP}/BP_MemoryCam", "Actor")]
+           (f"{BP}/BP_MemoryCam", "Actor"), (f"{BP}/BP_RailRover", "Actor"), (f"{BP}/BP_Beam", "Actor"),
+           (f"{BP}/BP_OrbitCam", "Actor")]
 for path, parent in NEW_BPS:
     if exists(path):
         continue
@@ -131,7 +145,9 @@ for name, t, arr in [("Heat", "float", False), ("Hearts", "int", False), ("Banne
                      ("Phase", "int", False), ("Objective", "string", False), ("LastDamage", "float", False),
                      ("NearCrate", "bool", False), ("DeployAtCrate", "bool", False), ("Cells", "int", False),
                      ("Parts", "int", False), ("LastAttack", "float", False), ("MemoryPlaying", "bool", False),
-                     ("HitDone", "bool", False)]:
+                     ("HitDone", "bool", False), ("Stage", "int", False), ("RailS", "float", False),
+                     ("RailV", "float", False), ("Pinged", "bool", False), ("Passing", "bool", False),
+                     ("RideFwd", "bool", False), ("RideBack", "bool", False), ("CoreSeen", "bool", False)]:
     add_var(G, name, t, arr)
 add_var(G, "MemoryCaptions", "string", array=True, editable=True)
 print(py(f'''
@@ -144,6 +160,21 @@ add_obj_var(G, "Tuning", cls(f"{DATA}/BP_Tuning"), editable=True)
 add_obj_var(G, "RespawnPoint", ACTOR, editable=True)
 add_obj_var(G, "BossSite", ACTOR, editable=True)
 add_obj_var(G, "MemoryCam", cls(f"{BP}/BP_MemoryCam"), editable=True)
+add_obj_var(G, "BayCam", ACTOR, editable=True)
+add_obj_var(G, "TitleCam", ACTOR, editable=True)
+add_obj_var(G, "MineStart", ACTOR, editable=True)
+add_obj_var(G, "RailRover", cls(f"{BP}/BP_RailRover"), editable=True)
+add_obj_var(G, "BayBot", cls(f"{BP}/BP_Bot"), editable=True)
+add_var(f"{BP}/BP_RailRover", "S", "float")
+add_var(f"{BP}/BP_Beam", "Top", "Vector", editable=True)
+add_var(f"{BP}/BP_Beam", "Phase", "float", editable=True)
+for name in ("Radius", "Height", "Rate"):
+    add_var(f"{BP}/BP_OrbitCam", name, "float", editable=True)
+add_var(f"{BP}/BP_OrbitCam", "Center", "Vector", editable=True)
+add_var(f"{BP}/BP_OrbitCam", "LookAt", "Vector", editable=True)
+add_var(BP + "/BP_Fragment", "Home", "Vector")
+add_var(BP + "/BP_Fragment", "Hover", "bool", editable=True)
+add_var(BP + "/BP_TimeOfDay", "Phase", "int")
 F = f"{BP}/BP_Fragment"
 add_var(F, "bIsBanned", "bool", editable=True)
 add_var(F, "bIsBattery", "bool", editable=True)
@@ -182,52 +213,24 @@ add_var(P, "Objective", "string", editable=True)
 add_var(P, "Used", "bool")
 T = f"{BP}/BP_TimeOfDay"
 for phase in ("Dawn", "Day", "Dusk", "Night"):
-    add_var(T, phase + "Tint", "LinearColor", editable=True)
-    add_var(T, phase + "Fog", "LinearColor", editable=True)
+    for prm in ("Sun", "Ambient", "Shade", "Haze", "SkyTop", "SkyHorizon", "Cloud"):
+        add_var(T, phase + prm, "LinearColor", editable=True)
 print("variables done")
 
 # ---------------------------------------------------------------- components + defaults + data asset
 # (blueprint, name, basic shape, material, relative location, relative scale, collision, hidden in game)
 PLAYER_BP = "/Game/ThirdPerson/Blueprints/BP_ThirdPersonCharacter"
 COMPONENTS = [
-    ("BP_Raider", "Body", "Cylinder", "M_Dark", (0, 0, 0), (0.7, 0.7, 1.5), "NoCollision", False),
-    ("BP_Raider", "Head", "Sphere", "M_Dark", (0, 0, 95), (0.6, 0.6, 0.6), "NoCollision", False),
-    ("BP_Raider", "Eye", "Cube", "M_Red", (0, 0, 98), (0.66, 0.66, 0.08), "NoCollision", False),
-    ("BP_Imperial", "Body", "Cube", "M_White", (0, 0, 0), (0.7, 0.7, 1.7), "NoCollision", False),
-    ("BP_Imperial", "Head", "Cube", "M_Dark", (0, 0, 102), (0.8, 0.8, 0.32), "NoCollision", False),
-    ("BP_Imperial", "Eye", "Cube", "M_Red", (38, 0, 102), (0.1, 0.62, 0.12), "NoCollision", False),
-    ("BP_Checkpoint", "Post", "Cylinder", "M_Pad", (0, 0, 0), (0.14, 0.14, 2.0), "NoCollision", False),
-    ("BP_Checkpoint", "Cap", "Sphere", "M_Pad", (0, 0, 115), (0.36, 0.36, 0.36), "NoCollision", False),
+    # Characters, vehicles and props are built by splice_kits.py.
     ("BP_PhaseTrigger", "Box", "Cube", "M_Pad", (0, 0, 0), (1, 1, 1), "OverlapAllDynamic", True),
-    ("BP_StashCrate", "Box", "Cube", "M_Gray", (0, 0, 0), (1.2, 0.8, 0.8), "BlockAll", False),
-    ("BP_StashCrate", "Lid", "Cube", "M_Pad", (0, 0, 43), (1.24, 0.84, 0.06), "NoCollision", False),
     ("BP_BossWall", "Wall", "Cube", "M_Dark", (0, 0, 0), (1, 1, 1), "BlockAll", False),
-    ("BP_Boss", "Body", "Cube", "M_Dark", (0, 0, 0), (3, 3, 4), "NoCollision", False),
-    ("BP_Boss", "Band", "Cube", "M_Pad", (0, 0, 60), (3.06, 3.06, 0.3), "NoCollision", False),
-    ("BP_Boss", "Head", "Cube", "M_Dark", (0, 0, 240), (1.6, 1.6, 0.8), "NoCollision", False),
-    ("BP_Boss", "Eye", "Cube", "M_Pad", (-82, 0, 240), (0.06, 1.2, 0.25), "NoCollision", False),
-    ("BP_Boss", "Arm", "Cube", "M_Dark", (0, 0, -60), (8, 0.5, 0.5), "NoCollision", False),
-    ("BP_Boss", "WP1", "Sphere", "M_Pad", (-200, 0, -100), (0.7, 0.7, 0.7), "NoCollision", False),
-    ("BP_Boss", "WP2", "Sphere", "M_Pad", (0, -200, -100), (0.7, 0.7, 0.7), "NoCollision", False),
-    ("BP_Boss", "WP3", "Sphere", "M_Pad", (0, 200, -100), (0.7, 0.7, 0.7), "NoCollision", False),
-    ("BP_BannedCore", "Mesh", "Sphere", "M_Pad", (0, 0, 0), (0.7, 0.7, 0.7), "OverlapAllDynamic", False),
+    ("BP_BannedCore", "Mesh", "Sphere", "M_Pad", (0, 0, 0), (0.8, 0.8, 0.8), "OverlapAllDynamic", False),
     ("BP_Spinner", "Mesh", "Cube", "M_Pad", (0, 0, 0), (1, 1, 1), "NoCollision", False),
     ("BP_MemoryCam", "Camera", "CAMERA", None, (0, 0, 0), (1, 1, 1), None, False),
-    # The player: a cylinder with a head, an orange visor (so you can see which way it
-    # faces) and a pack. The template mannequin is hidden.
-    (PLAYER_BP, "CylBody", "Cylinder", "M_White", (0, 0, -22), (0.7, 0.7, 1.48), "NoCollision", False),
-    (PLAYER_BP, "CylHead", "Sphere", "M_White", (0, 0, 74), (0.62, 0.62, 0.62), "NoCollision", False),
-    (PLAYER_BP, "CylVisor", "Cube", "M_Orange", (22, 0, 78), (0.3, 0.5, 0.14), "NoCollision", False),
-    (PLAYER_BP, "CylPack", "Cube", "M_Dark", (-34, 0, 0), (0.25, 0.5, 0.6), "NoCollision", False),
+    ("BP_OrbitCam", "Camera", "CAMERA", None, (0, 0, 0), (1, 1, 1), None, False),
+    ("BP_RailRover", "Camera", "CAMERA", None, (-1000, 0, 440), (1, 1, 1), None, False),
 ]
-# Time-of-day presets: tint multiplies the picture; fog alpha is its strength.
-PRESETS = {
-    "DawnTint": (1.00, 0.86, 0.88, 1.0), "DawnFog": (0.85, 0.50, 0.52, 0.22),
-    "DayTint": (1.00, 1.00, 1.00, 1.0), "DayFog": (1.00, 1.00, 1.00, 0.0),
-    "DuskTint": (1.00, 0.78, 0.62, 1.0), "DuskFog": (0.75, 0.33, 0.14, 0.28),
-    "NightTint": (0.46, 0.44, 0.70, 1.0), "NightFog": (0.035, 0.025, 0.07, 0.50),
-}
-print(py("PLAYER_BP = " + repr(PLAYER_BP) + "\nCOMPONENTS = " + repr(COMPONENTS) + "\nPRESETS = " + repr(PRESETS) + "\nTUNING = " + repr(TUNING) + r'''
+print(py("PLAYER_BP = " + repr(PLAYER_BP) + "\nCOMPONENTS = " + repr(COMPONENTS) + "\nTUNING = " + repr(TUNING) + r'''
 sds = unreal.get_engine_subsystem(unreal.SubobjectDataSubsystem)
 lib = unreal.SubobjectDataBlueprintFunctionLibrary
 out = []
@@ -272,13 +275,9 @@ for h in sds.k2_gather_subobject_data_for_blueprint(pbp):
 unreal.BlueprintEditorLibrary.compile_blueprint(pbp)
 unreal.EditorAssetLibrary.save_asset(PLAYER_BP)
 
-for bpn in ["BP_Raider", "BP_Imperial", "BP_Checkpoint", "BP_PhaseTrigger", "BP_TimeOfDay", "BP_Fragment", "BP_Bot", "BP_StashCrate", "BP_BossWall", "BP_Boss", "BP_BannedCore", "BP_Spinner", "BP_MemoryCam", "BP_SpliceGame"]:
+for bpn in ["BP_Raider", "BP_Imperial", "BP_Checkpoint", "BP_PhaseTrigger", "BP_TimeOfDay", "BP_Fragment", "BP_Bot", "BP_StashCrate", "BP_BossWall", "BP_Boss", "BP_BannedCore", "BP_Spinner", "BP_MemoryCam", "BP_RailRover", "BP_Beam", "BP_OrbitCam", "BP_SpliceGame"]:
     bp = unreal.load_asset("/Game/Splice/Blueprints/" + bpn)
     unreal.BlueprintEditorLibrary.compile_blueprint(bp)
-    if bpn == "BP_TimeOfDay":
-        cdo = unreal.get_default_object(bp.generated_class())
-        for k, v in PRESETS.items():
-            cdo.set_editor_property(k, unreal.LinearColor(*v))
     unreal.EditorAssetLibrary.save_asset("/Game/Splice/Blueprints/" + bpn)
 
 # DA_Tuning: one instance of BP_Tuning that holds the numbers.

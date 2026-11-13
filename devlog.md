@@ -13,7 +13,7 @@ One page per day. All dates and times are US Eastern (ET). Each one covers:
 | Day | Date | Summary |
 |---|---|---|
 | [Day 0: Concept](days/day-0.md) | Nov 12 (from 12:06 AM ET) | Pitch and sketches, plus a Moebius shader test on a robot-on-Mars scene |
-| [Day 1](days/day-1.md) | Nov 12 (from 1:35 AM ET) | Gray box loop, first web build, the comic look, then all of Tier 1: the night party, Heat, fights, the boss and the memory ending. |
+| [Day 1](days/day-1.md) | Nov 12 (from 1:35 AM ET) | Gray box loop, first web build, the comic look, then all of Tier 1: the night party, Heat, fights, the boss and the memory ending. In the evening, a bridge that plays our browser prototype inside Unreal. |
 | [Day 2](days/day-2.md) | Nov 13 | *coming* |
 | [Day 3](days/day-3.md) | Nov 14 | *coming* |
 | [Day 4](days/day-4.md) | Nov 15 | *coming* |
@@ -28,3 +28,4 @@ These are longer technical write-ups, linked from the day pages.
 - [0004: First web build, and a look that survives it](entries/0004-web-build-and-look.md)
 - [0005: Night, Heat, raiders and hearts (slice steps 8–10)](entries/0005-night-heat-raiders.md)
 - [0006: The party, the Digger at your side, the boss and the ending](entries/0006-party-rooms-boss-ending.md)
+- [0007: A faster prototype, and a bridge that plays it inside Unreal](entries/0007-prototype-bridge-to-unreal.md)

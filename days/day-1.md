@@ -27,6 +27,8 @@ to end. Everything is Blueprints, with no C++.
 | Look | Flat comic materials and ink lines, the same on both web tiers | Done; art still to come |
 | Web | First web build, tested in Chrome on both renderer tiers | Done |
 | UI | Restyled to Kiki's Game UI board: paper, ink, Michroma, IBM Plex Mono | Style done; layout still gray-box |
+| Rebuild | `Rovers` look and world redone outdoors: canyon mine, party rooms, village, rail line | Look and world done; game logic for the new layout not started |
+| Bridge | An exporter and an Unreal plugin that play our browser prototype inside Unreal, in the editor and the web build | Done; the scripted run passes title to SCENE RESTORED |
 
 **Tested by script in play mode:**
 - picked up all 5 items;
@@ -36,6 +38,13 @@ to end. Everything is Blueprints, with no C++.
 - the exit pad showed SCENE RESTORED.
 
 ## Clip or GIF
+
+The evening: our browser prototype playing inside Unreal ([build note 0007](../entries/0007-prototype-bridge-to-unreal.md)):
+
+| | |
+|---|---|
+| ![The rail ride in Unreal](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0007/ue_rail.png) | ![The party in Unreal](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0007/ue_party.png) |
+| ![The title in Unreal's web build](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0007/web_title.png) | ![The mine in Unreal's web build](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0007/web_mine.png) |
 
 | | |
 |---|---|
@@ -99,6 +108,8 @@ post-process shader on, too.
 | A lost banned piece was picked straight back up on respawn | Pieces reappeared before the player was moved | Move the player first |
 | F hit everyone in reach | A "return" inside a Blueprint loop only ends that pass | A flag set on the first hit |
 | The browser test's camera looked at the floor | The game page captures the mouse, so our real mouse turned the hidden test browser's camera | The test aims the camera itself before each shot |
+| A brown frame around every editor shot | The ink shader had a variable named `line`, a reserved word in HLSL, so Unreal drew its fallback material | Rename the variable |
+| Imported meshes had fewer triangles than we exported | Unreal's glTF import turns Nanite on, and reading back gives the simplified mesh | The importer turns Nanite off |
 | Couldn't test the E key by script | macOS blocks scripted keystrokes | Tested the same event directly, then pressed real E and TAB keys in the web build through a browser test |
 
 Details: [build note 0002](../entries/0002-splice-mine-graybox.md) · [build note 0003](../entries/0003-splice-full-loop.md)
@@ -111,6 +122,9 @@ Details: [build note 0002](../entries/0002-splice-mine-graybox.md) · [build not
 - **The rover uses a distance check instead of an overlap box.** It needs no
   extra component and is easy to tune.
 - **Line traces:** not needed for a straight tunnel.
+- **Copying the prototype into Unreal by hand.** We started it, then built a
+  bridge instead, so a design change is made once
+  ([build note 0007](../entries/0007-prototype-bridge-to-unreal.md)).
 - **Stretch goals not started:**
   - sim preview
   - a "deleted scene" clip

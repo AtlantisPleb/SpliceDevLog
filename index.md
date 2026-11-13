@@ -20,7 +20,7 @@
 ![Splice running in the browser](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0006/web_b_hall.png)
 
 - **Day 0 (Nov 12, from 12:06 AM ET):** concept, plus a Moebius-style comic shader test. [Read](days/day-0.md)
-- **Day 1 (Nov 12, from 1:35 AM ET):** the whole Tier 1 run: the day mine, the night party, the boss and the memory ending, playing in the browser. [Read](days/day-1.md)
+- **Day 1 (Nov 12, from 1:35 AM ET):** the whole Tier 1 run: the day mine, the night party, the boss and the memory ending, playing in the browser. In the evening, a bridge that plays our browser prototype inside Unreal. [Read](days/day-1.md)
 
 [All days →](devlog.md)
 

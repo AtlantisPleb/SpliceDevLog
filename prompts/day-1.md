@@ -52,3 +52,16 @@ This is so that you can sell them later for battery juice when we include batter
 Before you prompt it to do something, you can see it moving from the main character to the activity it's set to do. And let's change the main character to a cylinder
 ```
 Result: the night zone redesign and steps 11–12 ([build note 0006](../entries/0006-party-rooms-boss-ending.md)).
+
+Words in [brackets] replace a session id or an internal name.
+
+```text
+review [the prototype session] and write a doc about why your version is so different (and worse) than that world. make a doc w gap analysis and plan to close the gaps, like make your version exactly like that one, and do it
+```
+Result: the gap list, and the `Rovers` look and world rebuilt outdoors.
+
+```text
+So we're gonna continue this, but we're gonna build in [our tools] and then build an exporter to Unreal Engine. Eventually we're gonna want that to be a two-way thing, like import any Unreal Engine project to us, two-way. For now, I want an exporter. so using the current version of Splice in [our tools] as the base. figure out what is the minimal exporter needed to export it to Unreal Engine. remember we have the Unreal Engine source code on this computer, so you can look at that. First, write a specification for it.
+```
+Result: the specification, then the exporter and the Unreal bridge
+([build note 0007](../entries/0007-prototype-bridge-to-unreal.md)).
