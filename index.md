@@ -21,6 +21,7 @@
 
 - **Day 0 (Nov 12, from 12:06 AM ET):** concept, plus a Moebius-style comic shader test. [Read](days/day-0.md)
 - **Day 1 (Nov 12, from 1:35 AM ET):** the whole Tier 1 run: the day mine, the night party, the boss and the memory ending, playing in the browser. In the evening, a bridge that plays our browser prototype inside Unreal. [Read](days/day-1.md)
+- **Days 2 and 3 (Nov 13–14):** the feel pass. We played it three times, said what was wrong out loud, and fixed it: movement, camera, driving, Digger, the boss, the compass. [Read](entries/0008-feel-pass-and-three-playtests.md)
 
 [All days →](devlog.md)
 
