@@ -24,6 +24,7 @@
 - **Days 2 and 3 (Nov 13–14):** the feel pass. We played it three times, said what was wrong out loud, and fixed it: movement, camera, driving, Digger, the boss, the compass. [Read](entries/0008-feel-pass-and-three-playtests.md)
 
 - **Day 4 (Nov 15):** the slice rebuilt natively in Unreal plays start to end; Kiki's playtests, a jetpack, and an audit of everything the Unreal build lost from the prototype. [Read](entries/0009-unreal-rebuild-and-the-playtest-that-broke-it.md)
+- **Day 4, evening (Nov 15): submitted.** Three more playtests, the designed difficulty back in, an automated player that plays the packaged game, and the release build. Kiki played it to the win. [Read](entries/0010-submitted.md)
 
 [All days →](devlog.md)
 

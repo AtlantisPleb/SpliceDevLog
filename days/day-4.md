@@ -49,7 +49,7 @@ Full log: [prompts/day-4.md](../prompts/day-4.md)
 ## What we cut and why
 
 - Character creation: one fixed Director, as the design says.
-- Submitting at 3 PM: not ready. We finish the parity work first.
+- Submitting at 3 PM: not ready. We finished the parity work first, then submitted the 4:37 PM release build. [Build note 0010: Submitted](../entries/0010-submitted.md)
 
 ## Tweets
 

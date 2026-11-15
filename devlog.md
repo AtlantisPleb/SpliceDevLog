@@ -31,3 +31,4 @@ These are longer technical write-ups, linked from the day pages.
 - [0007: A faster prototype, and a bridge that plays it inside Unreal](entries/0007-prototype-bridge-to-unreal.md)
 - [0008: The feel pass, three playtests, and what they found](entries/0008-feel-pass-and-three-playtests.md)
 - [0009: The Unreal rebuild, and the playtest that broke it](entries/0009-unreal-rebuild-and-the-playtest-that-broke-it.md)
+- [0010: Submitted](entries/0010-submitted.md)
