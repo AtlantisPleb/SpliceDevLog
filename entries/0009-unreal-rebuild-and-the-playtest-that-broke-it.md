@@ -17,6 +17,28 @@ a written game design document, with AI agents doing the building. Then Kiki pla
 |---|---|
 | ![](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0009/title.png) | ![](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0009/farm_start.png) |
 
+## What's working: a gallery
+
+| Riding the board at the solar farm, with Digger, Sniper and the Imperial robots | Driving Sniper toward the garage at dusk |
+|---|---|
+| ![](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0009/hero_board_farm.png) | ![](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0009/hero_drive_dusk.png) |
+
+| The night rave in the garage | Digger drilling through the rock wall |
+|---|---|
+| ![](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0009/hero_rave.png) | ![](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0009/fx_digger_drills_wall.png) |
+
+| The village: the chapel plaza | The village: the skate plaza, kickers and a launch ramp onto a roof |
+|---|---|
+| ![](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0009/village_chapel.png) | ![](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0009/village_skate_plaza.png) |
+
+| The whole village from above | An Imperial robot's footfall |
+|---|---|
+| ![](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0009/greek_quarter.png) | ![](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0009/fx_giant_footfall.png) |
+
+| The hotbar icons, drawn by script | |
+|---|---|
+| ![](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0009/icons.png) | |
+
 ## Steps
 
 1. Nov 14, 2:20–3:48 PM: a game design document for the Unreal rebuild, written from the prototype, the beat sheet,

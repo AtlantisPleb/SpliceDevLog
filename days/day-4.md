@@ -21,6 +21,16 @@ Full write-up: [build note 0009](../entries/0009-unreal-rebuild-and-the-playtest
 |---|---|
 | ![](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0009/title.png) | ![](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0009/greek_quarter.png) |
 
+| On the board at the farm | The night rave |
+|---|---|
+| ![](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0009/hero_board_farm.png) | ![](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0009/hero_rave.png) |
+
+| The drive at dusk | The village's skate plaza |
+|---|---|
+| ![](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0009/hero_drive_dusk.png) | ![](https://raw.githubusercontent.com/AtlantisPleb/SpliceDevLog/main/media/0009/village_skate_plaza.png) |
+
+More in the [gallery in build note 0009](../entries/0009-unreal-rebuild-and-the-playtest-that-broke-it.md#whats-working-a-gallery).
+
 ## Prompts and agent steps we used
 
 Full log: [prompts/day-4.md](../prompts/day-4.md)
