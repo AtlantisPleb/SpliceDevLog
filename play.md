@@ -2,7 +2,7 @@
 
 # Play Splice
 
-**[Splice on itch.io](https://itch.io/)** (placeholder: the page goes live with the release build)
+**[Play Splice on itch.io](https://arcaneflame888.itch.io/splicebots)**
 
 ## Controls
 

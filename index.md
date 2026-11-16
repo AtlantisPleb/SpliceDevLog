@@ -12,7 +12,7 @@
 
 ## Play
 
-**[Play Splice on itch.io](https://itch.io/)** (placeholder: link goes live with the release)
+**[Play Splice on itch.io](https://arcaneflame888.itch.io/splicebots)**
 
 ## Where we are
 
