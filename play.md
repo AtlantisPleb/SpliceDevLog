@@ -1,8 +1,8 @@
 [Home](index.md) · [Devlog](devlog.md) · [How We Used AI](how-we-used-ai.md) · [Play](play.md)
 
-# Play Splice
+# Play SPLICEBOTS
 
-**[Play Splice on itch.io](https://arcaneflame888.itch.io/splicebots)**
+**[Play SPLICEBOTS on itch.io](https://arcaneflame888.itch.io/splicebots)**
 
 ## Controls
 

@@ -1,6 +1,6 @@
 [Home](index.md) · [Devlog](devlog.md) · [How We Used AI](how-we-used-ai.md) · [Play](play.md)
 
-# Splice
+# SPLICEBOTS
 
 <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin:16px 0;">
   <iframe src="https://www.youtube.com/embed/V_Z51xyd1nM" title="Splice devlog video" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -12,7 +12,7 @@
 
 ## Play
 
-**[Play Splice on itch.io](https://arcaneflame888.itch.io/splicebots)**
+**[Play SPLICEBOTS on itch.io](https://arcaneflame888.itch.io/splicebots)**
 
 ## Where we are
 
