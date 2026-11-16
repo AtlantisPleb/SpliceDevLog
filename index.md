@@ -2,14 +2,13 @@
 
 # Splice
 
+<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin:16px 0;">
+  <iframe src="https://www.youtube.com/embed/V_Z51xyd1nM" title="Splice devlog video" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+**Our final sendoff:** [▶ Watch the Splice devlog on YouTube](https://www.youtube.com/watch?v=V_Z51xyd1nM)
+
 **On an Earth left behind, scavenge banned robot parts and splice them back to life in your rover's hidden edit bay, restoring the director's cut the Emperor tried to erase.**
-
-## Watch the devlog
-
-<!-- Final devlog video goes here on Saturday. Replace VIDEO_ID with the YouTube id. -->
-<!-- <iframe width="720" height="405" src="https://www.youtube.com/embed/VIDEO_ID" title="Splice devlog" frameborder="0" allowfullscreen></iframe> -->
-
-*Video coming Saturday, Nov 14.*
 
 ## Play
 
