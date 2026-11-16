@@ -144,3 +144,21 @@ We are happy with what we submitted. If we post an update, it is Kiki's list fro
 - The distant buildings as the printed domes in that art; stairs in the garage that read as stairs.
 - The drill mech fed and told to stay like Digger; Imperial robots walking everywhere; more batteries in the bays.
 - More music.
+
+## Final update, Sunday night
+
+The build we submitted is a later one than this note first described: Shipping package `20261115-190027`, 357 MB zipped.
+It folds in most of the list above:
+
+- The way out after the boss is a sealed exit and a fight, then a run to Sniper with Imperial robots giving chase.
+- The memory reader is built and spliced in the edit bay before the memory is restored.
+- The edit bay shows the robot live in 3D on its stage, at a size you can read.
+- The closing scene uses the concept art; printed homes and domes stand in the distance; the garage has stairs.
+- The drill mech follows, opens the hallway on a click, and can be told to stay. There is a synthesised score.
+
+What we know and have not hidden: 382 of 382 rule and wiring tests pass on the submitted source, and people have won
+earlier builds, but the new ending has not been played from the boss to the restored memory in one sitting in this
+exact build. In scripted play the fight out is won by moving, not by standing at the gate. That is the first thing we
+check if we post an update.
+
+Thank you for playing.
